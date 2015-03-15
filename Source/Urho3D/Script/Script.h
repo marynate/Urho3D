@@ -53,7 +53,7 @@ enum DumpMode
 class URHO3D_API Script : public Object
 {
     OBJECT(Script);
-
+	friend class asPEEK;
     friend class ScriptFile;
 
 public:
@@ -128,6 +128,11 @@ private:
     unsigned scriptNestingLevel_;
     /// Flag for executing engine console commands as script code. Default to true.
     bool executeConsoleCommands_;
+
+#ifdef URHO3D_ANGELSCRIPT_DEBUGGING
+	/// asPEEK debugging server
+	asPEEK* debugDaemon_;
+#endif
 };
 
 /// Register Script library objects.
