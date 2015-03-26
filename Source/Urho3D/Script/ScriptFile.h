@@ -104,7 +104,7 @@ public:
     /// Clean up an event invoker object when its associated script object no longer exists
     void CleanupEventInvoker(asIScriptObject* object);
 
-private:
+public:
     /// Add an event handler and create the necessary proxy object.
     void AddEventHandlerInternal(Object* sender, StringHash eventType, const String& handlerName);
     /// Add a script section, checking for includes recursively. Return true if successful.
@@ -116,6 +116,7 @@ private:
     /// Handle application update event.
     void HandleUpdate(StringHash eventType, VariantMap& eventData);
     
+private:
     /// Script subsystem.
     SharedPtr<Script> script_;
     /// Script module.

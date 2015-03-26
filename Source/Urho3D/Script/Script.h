@@ -96,7 +96,7 @@ public:
     /// Return the script module create/delete mutex.
     Mutex& GetModuleMutex() { return moduleMutex_; }
 
-private:
+public:
     /// Increase script nesting level.
     void IncScriptNestingLevel() { ++scriptNestingLevel_; }
     /// Decrease script nesting level.
@@ -110,6 +110,7 @@ private:
     /// Handle a console command event.
     void HandleConsoleCommand(StringHash eventType, VariantMap& eventData);
 
+private:
     /// AngelScript engine.
     asIScriptEngine* scriptEngine_;
     /// Immediate execution script context.

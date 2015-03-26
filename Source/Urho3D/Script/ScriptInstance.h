@@ -113,6 +113,8 @@ public:
     asIScriptObject* GetScriptObject() const { return scriptObject_; }
     /// Return class name.
     const String& GetClassName() const { return className_; }
+	/// Return if this ScriptInstance is the specified type, or derived from it
+	bool IsA(const String& className) const;
 
     /// Set script file attribute.
     void SetScriptFileAttr(const ResourceRef& value);

@@ -66,4 +66,8 @@ void RegisterScriptAPI(asIScriptEngine* engine);
 /// Register the Engine library to script.
 void RegisterEngineAPI(asIScriptEngine* engine);
 
+void RegisterBehaviorAPI(asIScriptEngine*);
+void RegisterSteeringAPI(asIScriptEngine*);
+void RegisterBlackboardAPI(asIScriptEngine*);
+
 }

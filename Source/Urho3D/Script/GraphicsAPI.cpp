@@ -30,6 +30,7 @@
 #include "../Graphics/DebugRenderer.h"
 #include "../Graphics/DecalSet.h"
 #include "../Graphics/Graphics.h"
+#include "../Graphics/IKController.h"
 #include "../Graphics/Light.h"
 #include "../Graphics/Material.h"
 #include "../Graphics/Octree.h"
@@ -40,6 +41,7 @@
 #include "../Scene/Scene.h"
 #include "../Scene/SmoothedTransform.h"
 #include "../Graphics/StaticModelGroup.h"
+#include "../Graphics/TailGenerator.h"
 #include "../Graphics/Technique.h"
 #include "../Graphics/Terrain.h"
 #include "../Graphics/TerrainPatch.h"
@@ -1619,6 +1621,39 @@ static void RegisterOctree(asIScriptEngine* engine)
     engine->RegisterGlobalFunction("Octree@+ get_octree()", asFUNCTION(GetOctree), asCALL_CDECL);
 }
 
+static void RegisterTailGenerator(asIScriptEngine* engine)
+{
+	RegisterDrawable<TailGenerator>(engine, "TailGenerator");
+	engine->RegisterObjectMethod("TailGenerator", "void SetMaterial(Material@+)", asMETHOD(TailGenerator, SetMaterial), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_tailLength(float)", asMETHOD(TailGenerator, SetTailLength), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "float get_tailLength()", asMETHOD(TailGenerator, GetTailLength), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_numTails(int)", asMETHOD(TailGenerator, SetNumTails), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "int get_numTails()", asMETHOD(TailGenerator, GetNumTails), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void SetWidthScale(float)", asMETHOD(TailGenerator, SetWidthScale), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_headColor(const Color&in)", asMETHOD(TailGenerator, SetColorForHead), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_tailColor(const Color&in)", asMETHOD(TailGenerator, SetColorForTip), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "Color get_headColor()", asMETHOD(TailGenerator, GetColorForHead), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "Color get_tailColor()", asMETHOD(TailGenerator, GetColorForTip), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "bool get_drawVertical()", asMETHOD(TailGenerator, GetDrawVertical), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "bool get_drawHorizontal()", asMETHOD(TailGenerator, GetDrawHorizontal), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_drawVertical(bool)", asMETHOD(TailGenerator, SetDrawVertical), asCALL_THISCALL);
+	engine->RegisterObjectMethod("TailGenerator", "void set_drawHorizontal(bool)", asMETHOD(TailGenerator, SetDrawHorizontal), asCALL_THISCALL);
+}
+
+void RegisterIKController(asIScriptEngine* engine)
+{
+	RegisterComponent<IKController>(engine, "IKController");
+	engine->RegisterObjectMethod("IKController", "bool HashIKChain(const StringHash&in)", asMETHOD(IKController, HasIKChain), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "void RemoveIKChain(const StringHash&in)", asMETHOD(IKController, RemoveIKChain), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "void AddIKChain(const StringHash&in, const String&in, const String&in, const String&in)", asMETHOD(IKController, AddIKChain), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "void UpdateIKChainEffector(const StringHash&in, const Vector3&in)", asMETHOD(IKController, UpdateIKChainEffector), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "void UpdateIKChainTwist(const StringHash&in, float)", asMETHOD(IKController, UpdateIKChainTwist), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "void ToggleIKChain(const StringHash&in, bool)", asMETHOD(IKController, ToggleIKChain), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "float GetIKChainTwist(const StringHash&in)", asMETHOD(IKController, GetIKChainTwist), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "Vector3 GetIKChainEffector(const StringHash&in)", asMETHOD(IKController, GetIKChainEffector), asCALL_THISCALL);
+	engine->RegisterObjectMethod("IKController", "bool GetIKChainEnabled(const StringHash&in)", asMETHOD(IKController, GetIKChainEnabled), asCALL_THISCALL);
+}
+
 void RegisterGraphicsAPI(asIScriptEngine* engine)
 {
     RegisterSkeleton(engine);
@@ -1646,6 +1681,8 @@ void RegisterGraphicsAPI(asIScriptEngine* engine)
     RegisterOctree(engine);
     RegisterGraphics(engine);
     RegisterRenderer(engine);
+	RegisterTailGenerator(engine);
+	RegisterIKController(engine);
 }
 
 }

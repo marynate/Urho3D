@@ -124,7 +124,7 @@ asIScriptObject* NodeGetNamedScriptObject(const String& className, Node* ptr)
         if ((*i)->GetType() == ScriptInstance::GetTypeStatic())
         {
             ScriptInstance* instance = static_cast<ScriptInstance*>(i->Get());
-            if (instance->GetClassName() == className)
+            if (instance->IsA(className))
             {
                 asIScriptObject* object = instance->GetScriptObject();
                 if (object)

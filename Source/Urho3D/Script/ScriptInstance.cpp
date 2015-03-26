@@ -279,6 +279,25 @@ void ScriptInstance::ClearDelayedExecute(const String& declaration)
     }
 }
 
+bool ScriptInstance::IsA(const String& className) const
+{
+	// Early out for the easiest case where that's what we are
+	if (className_ == className)
+		return true;
+	if (scriptObject_ != 0x0)
+	{
+		// Start immediately at the first base class because we already checked the early out
+		asIObjectType* currentType = scriptObject_->GetObjectType()->GetBaseType();
+		while (currentType != 0x0)
+		{
+			if (className == currentType->GetName())
+				return true;
+			currentType = currentType->GetBaseType();
+		}
+	}
+	return false;
+}
+
 void ScriptInstance::AddEventHandler(StringHash eventType, const String& handlerName)
 {
     if (!scriptObject_)

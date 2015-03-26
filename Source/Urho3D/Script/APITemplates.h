@@ -372,6 +372,28 @@ template <class T> T* ConstructNamedObject(const String& name)
     return object;
 }
 
+template <class T> T* SimpleConstruct()
+{
+	return new T();
+}
+
+template <class T> T* SimpleNamedConstruct(const String& name)
+{
+	return new T(name);
+}
+
+template <class T> void RegisterSimpleConstruct(asIScriptEngine* engine, const char* name)
+{
+	String declFactory(String(name) + "@+ f()");
+	engine->RegisterObjectBehaviour(name, asBEHAVE_FACTORY, declFactory.CString(), asFUNCTION(SimpleConstruct<T>), asCALL_CDECL);
+}
+
+template <class T> void RegisterSimpleNamedConstruct(asIScriptEngine* engine, const char* name)
+{
+	String declFactory(String(name) + "@+ f(const String&in)");
+	engine->RegisterObjectBehaviour(name, asBEHAVE_FACTORY, declFactory.CString(), asFUNCTION(SimpleNamedConstruct<T>), asCALL_CDECL);
+}
+
 /// Template function for registering a default constructor for a class derived from Object.
 template <class T> void RegisterObjectConstructor(asIScriptEngine* engine, const char* className)
 {
