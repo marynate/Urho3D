@@ -82,6 +82,7 @@ Script::Script(Context* context) :
     RegisterInputAPI(scriptEngine_);
     RegisterAudioAPI(scriptEngine_);
     RegisterUIAPI(scriptEngine_);
+
 #ifdef URHO3D_NETWORK
     RegisterNetworkAPI(scriptEngine_);
 #endif
@@ -96,6 +97,11 @@ Script::Script(Context* context) :
 #endif
     RegisterScriptAPI(scriptEngine_);
     RegisterEngineAPI(scriptEngine_);
+
+	RegisterBehaviorAPI(scriptEngine_);
+	RegisterBlackboardAPI(scriptEngine_);
+	RegisterSteeringAPI(scriptEngine_);
+	RegisterDataTableAPI(scriptEngine_);
 
 #ifdef URHO3D_ANGELSCRIPT_DEBUGGING
 	debugDaemon_ = new asPEEK(context,9002);

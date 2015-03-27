@@ -1,34 +1,21 @@
 #pragma once
 
 #include "../Core/Variant.h"
-#include "../DB/DataRow.h"
 
 namespace Urho3D
 {
+	class JSONFile;
+	class XMLFile;
 
-    class ColumnInfo
-    {
-    public:
-        ColumnInfo(VariantType aType, const String& aName);
-		ColumnInfo() {} //for STL
-        
-        VariantType type_;
-        String name_;
-    };
-
-    class DataTable {
+    class DataTable : public RefCounted {
     public:
         DataTable(); //new empty datatable
-        DataTable(Vector<ColumnInfo> aColumnTypes);
         
-        void Read(const String& aFile);
-        
-        void ReadJSON(const String& aFile);
-        void ReadXML(const String& aFile);
+        void ReadJSON(JSONFile* aFile);
+        void ReadXML(XMLFile* aFile);
         
         /// returns a cache vector
-        VariantVector& GetRowRaw(unsigned int row);
-        DataRow* GetRow(unsigned int row);
+        VariantVector& GetRow(unsigned int row);
         
         int Rows() const;
         int Columns() const;

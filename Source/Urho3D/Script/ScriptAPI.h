@@ -69,5 +69,6 @@ void RegisterEngineAPI(asIScriptEngine* engine);
 void RegisterBehaviorAPI(asIScriptEngine*);
 void RegisterSteeringAPI(asIScriptEngine*);
 void RegisterBlackboardAPI(asIScriptEngine*);
+void RegisterDataTableAPI(asIScriptEngine*);
 
 }
