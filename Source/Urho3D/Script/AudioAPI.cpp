@@ -40,6 +40,9 @@ void RegisterSound(asIScriptEngine* engine)
     engine->RegisterObjectMethod("Sound", "bool get_sixteenBit() const", asMETHOD(Sound, IsSixteenBit), asCALL_THISCALL);
     engine->RegisterObjectMethod("Sound", "bool get_stereo() const", asMETHOD(Sound, IsStereo), asCALL_THISCALL);
     engine->RegisterObjectMethod("Sound", "bool get_compressed() const", asMETHOD(Sound, IsCompressed), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Sound", "float get_nearDistance() const", asMETHOD(Sound, GetDefaultNear), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Sound", "float get_farDistance() const", asMETHOD(Sound, GetDefaultFar), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Sound", "float get_rollOff() const", asMETHOD(Sound, GetDefaultRollOff), asCALL_THISCALL);
 }
 
 void RegisterSoundSources(asIScriptEngine* engine)

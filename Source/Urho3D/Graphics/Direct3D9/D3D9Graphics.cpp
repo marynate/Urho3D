@@ -28,12 +28,15 @@
 #include "../../Graphics/CustomGeometry.h"
 #include "../../Graphics/DebugRenderer.h"
 #include "../../Graphics/DecalSet.h"
+#include "../../Graphics/DecalInstance.h"
 #include "../../IO/File.h"
 #include "../../Graphics/Graphics.h"
 #include "../../Graphics/GraphicsEvents.h"
 #include "../../Graphics/GraphicsImpl.h"
+#include "../../Graphics/IKController.h"
 #include "../../Graphics/IndexBuffer.h"
 #include "../../IO/Log.h"
+#include "../../Graphics/Connector.h"
 #include "../../Graphics/Material.h"
 #include "../../Graphics/Octree.h"
 #include "../../Graphics/ParticleEffect.h"
@@ -54,6 +57,7 @@
 #include "../../Graphics/Texture3D.h"
 #include "../../Graphics/TextureCube.h"
 #include "../../Core/Timer.h"
+#include "../../Graphics/TailGenerator.h"
 #include "../../Graphics/VertexBuffer.h"
 #include "../../Graphics/VertexDeclaration.h"
 #include "../../Graphics/Zone.h"
@@ -2742,6 +2746,10 @@ void RegisterGraphicsLibrary(Context* context)
     DebugRenderer::RegisterObject(context);
     Octree::RegisterObject(context);
     Zone::RegisterObject(context);
+	TailGenerator::RegisterObject(context);
+	IKController::RegisterObject(context);
+	DecalInstance::RegisterObject(context);
+	Connector::RegisterObject(context);
 }
 
 }

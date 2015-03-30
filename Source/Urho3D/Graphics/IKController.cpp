@@ -61,10 +61,10 @@ void IKController::RegisterObject(Context* context)
 {
 	context->RegisterFactory<IKController>(GEOMETRY_CATEGORY);
 
-	COPY_BASE_ATTRIBUTES(LogicComponent);
+	ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, AM_DEFAULT);
 }
 
-void IKController::FixedPostUpdate(float timeStep)
+void IKController::PostUpdate(float timeStep)
 {
 	if (IsEnabledEffective())
 	{

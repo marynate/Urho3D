@@ -9,7 +9,7 @@
 
 namespace Urho3D
 {
-	class IKController : public LogicComponent
+	class URHO3D_API IKController : public LogicComponent
 	{
 		OBJECT(IKController);
 
@@ -20,7 +20,7 @@ namespace Urho3D
 
 		static void RegisterObject(Context*);
 
-		virtual void FixedPostUpdate(float timeStep) override;
+		virtual void PostUpdate(float timeStep) override;
 
 		virtual void DrawDebugGeometry(DebugRenderer* debug, bool depthTest) override;
 

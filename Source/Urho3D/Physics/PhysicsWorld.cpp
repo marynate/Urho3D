@@ -36,6 +36,7 @@
 #include "../Scene/Scene.h"
 #include "../Scene/SceneEvents.h"
 #include "../Container/Sort.h"
+#include "../Physics/JiggleBone.h"
 
 #include <Bullet/BulletCollision/BroadphaseCollision/btDbvtBroadphase.h>
 #include <Bullet/BulletCollision/BroadphaseCollision/btBroadphaseProxy.h>
@@ -921,6 +922,7 @@ void RegisterPhysicsLibrary(Context* context)
     RigidBody::RegisterObject(context);
     Constraint::RegisterObject(context);
     PhysicsWorld::RegisterObject(context);
+	JiggleBone::RegisterObject(context);
 }
 
 }

@@ -100,6 +100,8 @@ private:
     int cellCt_;
     Vector2 area_;
     IntVector2 dimensions_;
+
+	VariantVector emptyRet_;
 };
 
 }

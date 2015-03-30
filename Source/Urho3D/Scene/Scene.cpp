@@ -37,8 +37,11 @@
 #include "../Scene/SplinePath.h"
 #include "../Scene/UnknownComponent.h"
 #include "../Scene/ValueAnimation.h"
+#include "../Scene/Volume.h"
 #include "../Core/WorkQueue.h"
 #include "../Resource/XMLFile.h"
+
+#include "../AI/AI.h"
 
 #include "../DebugNew.h"
 
@@ -1232,6 +1235,8 @@ void RegisterSceneLibrary(Context* context)
     SmoothedTransform::RegisterObject(context);
     UnknownComponent::RegisterObject(context);
     SplinePath::RegisterObject(context);
+	Volume::RegisterObject(context);
+	RegisterAILibrary(context);
 }
 
 }

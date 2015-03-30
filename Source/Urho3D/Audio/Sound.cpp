@@ -67,7 +67,10 @@ Sound::Sound(Context* context) :
     sixteenBit_(false),
     stereo_(false),
     compressed_(false),
-    compressedLength_(0.0f)
+    compressedLength_(0.0f),
+	defaultNear_(15.0f),
+	defaultFar_(60.0f),
+	defaultRollOff_(2.0f)
 {
 }
 
@@ -372,6 +375,16 @@ void Sound::LoadParameters()
             if (paramElem.HasAttribute("start") && paramElem.HasAttribute("end"))
                 SetLoop(paramElem.GetInt("start"), paramElem.GetInt("end"));
         }
+
+		if (name == "distance")
+		{
+			if (paramElem.HasAttribute("near"))
+				defaultNear_ = paramElem.GetFloat("near");
+			if (paramElem.HasAttribute("far"))
+				defaultFar_ = paramElem.GetFloat("far");
+			if (paramElem.HasAttribute("rolloff"))
+				defaultRollOff_ = paramElem.GetFloat("rolloff");
+		}
         
         paramElem = paramElem.GetNext();
     }

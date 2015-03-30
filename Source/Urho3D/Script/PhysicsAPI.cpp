@@ -24,6 +24,7 @@
 #include "../Script/APITemplates.h"
 #include "../Physics/CollisionShape.h"
 #include "../Physics/Constraint.h"
+#include "../Physics/JiggleBone.h"
 #include "../Physics/PhysicsWorld.h"
 #include "../Physics/RigidBody.h"
 #include "../Scene/Scene.h"
@@ -320,12 +321,35 @@ static void RegisterPhysicsWorld(asIScriptEngine* engine)
     engine->RegisterGlobalFunction("PhysicsWorld@+ get_physicsWorld()", asFUNCTION(GetPhysicsWorld), asCALL_CDECL);
 }
 
+static void RegisterJiggleBone(asIScriptEngine* engine)
+{
+	RegisterComponent<JiggleBone>(engine, "JiggleBone");
+	engine->RegisterObjectMethod("JiggleBone", "float get_stiffness() const", asMETHOD(JiggleBone, GetStiffness), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "float get_mass() const", asMETHOD(JiggleBone, GetMass), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "float get_damping() const", asMETHOD(JiggleBone, GetDamping), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "float get_gravity() const", asMETHOD(JiggleBone, GetGravity), asCALL_THISCALL);
+
+	engine->RegisterObjectMethod("JiggleBone", "float get_sideStretch() const", asMETHOD(JiggleBone, GetSideStretch), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "float get_frontStretch() const", asMETHOD(JiggleBone, GetFrontStretch), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "bool get_squash() const", asMETHOD(JiggleBone, GetSquashAndStretch), asCALL_THISCALL);
+
+	engine->RegisterObjectMethod("JiggleBone", "void set_stiffness(float)", asMETHOD(JiggleBone, SetStiffness), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "void set_mass(float)", asMETHOD(JiggleBone, SetMass), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "void set_damping(float)", asMETHOD(JiggleBone, SetDamping), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "void set_gravity(float)", asMETHOD(JiggleBone, SetGravity), asCALL_THISCALL);
+
+	engine->RegisterObjectMethod("JiggleBone", "void set_sideStretch(float)", asMETHOD(JiggleBone, SetSideStretch), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "void set_frontStretch(float)", asMETHOD(JiggleBone, SetFrontStretch), asCALL_THISCALL);
+	engine->RegisterObjectMethod("JiggleBone", "void set_squash(bool)", asMETHOD(JiggleBone, SetSquashAndStretch), asCALL_THISCALL);
+}
+
 void RegisterPhysicsAPI(asIScriptEngine* engine)
 {
     RegisterCollisionShape(engine);
     RegisterRigidBody(engine);
     RegisterConstraint(engine);
     RegisterPhysicsWorld(engine);
+	RegisterJiggleBone(engine);
 }
 
 }

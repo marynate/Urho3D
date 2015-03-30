@@ -85,8 +85,10 @@ namespace Urho3D
 		///
 		bool GetDrawVertical() const { return vertical_; }
 		bool GetDrawHorizontal() const { return horizontal_; }
+		bool GetMatchNodeOrientation() const { return matchNode_; }
 		void SetDrawVertical(bool value);
 		void SetDrawHorizontal(bool value);
+		void SetMatchNodeOrientation(bool value);
 
 	protected:
 		void SetupBatches();
@@ -110,11 +112,11 @@ namespace Urho3D
 		void UpdateVertexBuffer(const FrameInfo& frame);
 
 		/// Geometry.
-		SharedPtr<Geometry> geometry_[2];
+		SharedPtr<Geometry> geometry_;
 		/// Vertex buffer.
-		SharedPtr<VertexBuffer> vertexBuffer_[2];
+		SharedPtr<VertexBuffer> vertexBuffer_;
 		/// Index buffer.
-		SharedPtr<IndexBuffer> indexBuffer_[2];
+		SharedPtr<IndexBuffer> indexBuffer_;
 		/// Transform matrices for position and billboard orientation.
 		Matrix3x4 transforms_[2];
 
@@ -122,10 +124,12 @@ namespace Urho3D
 		bool bufferSizeDirty_;
 		/// Vertex buffer needs rewrite flag.
 		bool bufferDirty_;
-		///
+		/// render the vertical strip
 		bool vertical_;
-		///
+		/// render the horizontal strip
 		bool horizontal_;
+		/// match Up/Right vectors to the node's orientation
+		bool matchNode_;
 		/// Previous position of tail
 		Vector3 previousPosition_;
 		float tailLength_;
@@ -134,7 +138,7 @@ namespace Urho3D
 
 		bool forceUpdateVertexBuffer_;
 
-		Vector<TailVertex> tailMesh[2];
+		Vector<TailVertex> tailMesh;
 		Vector<Tail> activeTails;
 
 		Color tailTipColor;

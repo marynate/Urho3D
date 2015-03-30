@@ -106,6 +106,7 @@ class URHO3D_API DecalSet : public Drawable
 {
     OBJECT(DecalSet);
 
+	friend class DecalInstance;
 public:
     /// Construct.
     DecalSet(Context* context);

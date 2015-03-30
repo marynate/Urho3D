@@ -1135,7 +1135,6 @@ void asPEEK::LineCallback(asIScriptContext* ctx)
 		EndDebugging();
 		return;
 	}
-
 	const char* section = 0x0;
 	int line = ctx->GetLineNumber(0, 0, &section);
 	if (line <= 0)

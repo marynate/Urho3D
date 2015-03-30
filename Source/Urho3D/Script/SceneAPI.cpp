@@ -30,6 +30,7 @@
 #include "../Container/Sort.h"
 #include "../Scene/SplinePath.h"
 #include "../Scene/ValueAnimation.h"
+#include "../Scene/Volume.h"
 
 namespace Urho3D
 {
@@ -319,6 +320,16 @@ static void RegisterScene(asIScriptEngine* engine)
 
     engine->RegisterGlobalFunction("Array<String>@ GetObjectCategories()", asFUNCTION(GetObjectCategories), asCALL_CDECL);
     engine->RegisterGlobalFunction("Array<String>@ GetObjectsByCategory(const String&in)", asFUNCTION(GetObjectsByCategory), asCALL_CDECL);
+}
+
+static void RegisterVolume(asIScriptEngine* engine)
+{
+	RegisterComponent<Volume>(engine, "Volume");
+	engine->RegisterObjectMethod("Volume", "bool ContainsPoint(const Vector3&in)", asMETHOD(Volume, ContainsPoint), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Volume", "bool ContainsBounds(const BoundingBox&in)", asMETHOD(Volume, ContainsBounds), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Volume", "bool ContainsSphere(const Sphere&in)", asMETHOD(Volume, ContainsSphere), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Volume", "BoundingBox get_bounds() const", asMETHOD(Volume, GetBounds), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Volume", "void set_bounds(const BoundingBox&in)", asMETHOD(Volume, SetBounds), asCALL_THISCALL);
 }
 
 void RegisterSceneAPI(asIScriptEngine* engine)

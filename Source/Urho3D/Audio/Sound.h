@@ -95,10 +95,18 @@ public:
     /// Fix interpolation by copying data from loop start to loop end (looped), or adding silence (oneshot.) Called internally, does not normally need to be called, unless the sound data is modified manually on the fly.
     void FixInterpolation();
 
+	float GetDefaultNear() const { return defaultNear_; }
+	float GetDefaultFar() const { return defaultFar_; }
+	float GetDefaultRollOff() const { return defaultRollOff_; }
+
 private:
     /// Load optional parameters from an XML file.
     void LoadParameters();
     
+	float defaultNear_;
+	float defaultFar_;
+	float defaultRollOff_;
+
     /// Sound data.
     SharedArrayPtr<signed char> data_;
     /// Loop start.
