@@ -24,7 +24,11 @@
 #include "../Script/APITemplates.h"
 #include "../Navigation/Navigable.h"
 #include "../Navigation/NavigationMesh.h"
+#include "../Navigation/DetourCrowdManager.h"
+#include "../Navigation/DynamicNavigationMesh.h"
 #include "../Navigation/OffMeshConnection.h"
+#include "../Navigation/NavArea.h"
+#include "../Navigation/Obstacle.h"
 
 namespace Urho3D
 {
@@ -41,6 +45,13 @@ static CScriptArray* NavigationMeshFindPath(const Vector3& start, const Vector3&
     PODVector<Vector3> dest;
     ptr->FindPath(dest, start, end, extents);
     return VectorToArray<Vector3>(dest, "Array<Vector3>");
+}
+
+static CScriptArray* DynamicNavigationMeshFindPath(const Vector3& start, const Vector3& end, const Vector3& extents, DynamicNavigationMesh* ptr)
+{
+	PODVector<Vector3> dest;
+	ptr->FindPath(dest, start, end, extents);
+	return VectorToArray<Vector3>(dest, "Array<Vector3>");
 }
 
 void RegisterNavigationMesh(asIScriptEngine* engine)
@@ -90,6 +101,14 @@ void RegisterNavigationMesh(asIScriptEngine* engine)
     engine->RegisterObjectMethod("NavigationMesh", "IntVector2 get_numTiles() const", asMETHOD(NavigationMesh, GetNumTiles), asCALL_THISCALL);
 }
 
+void RegisterDynamicNavigationMesh(asIScriptEngine* engine)
+{
+	RegisterComponent<DynamicNavigationMesh>(engine, "DynamicNavigationMesh");
+	RegisterSubclass<NavigationMesh, DynamicNavigationMesh>(engine, "NavigationMesh", "DynamicNavigationMesh");
+	engine->RegisterObjectMethod("DynamicNavigationMesh", "bool Build(const BoundingBox&in)", asMETHODPR(NavigationMesh, Build, (const BoundingBox&), bool), asCALL_THISCALL);
+	engine->RegisterObjectMethod("DynamicNavigationMesh", "Array<Vector3>@ FindPath(const Vector3&in, const Vector3&in, const Vector3&in extents = Vector3(1.0, 1.0, 1.0))", asFUNCTION(DynamicNavigationMeshFindPath), asCALL_CDECL_OBJLAST);
+}
+
 void RegisterOffMeshConnection(asIScriptEngine* engine)
 {
     RegisterComponent<OffMeshConnection>(engine, "OffMeshConnection");
@@ -101,11 +120,53 @@ void RegisterOffMeshConnection(asIScriptEngine* engine)
     engine->RegisterObjectMethod("OffMeshConnection", "bool get_bidirectional() const", asMETHOD(OffMeshConnection, IsBidirectional), asCALL_THISCALL);
 }
 
+void RegisterObstacle(asIScriptEngine* engine)
+{
+	RegisterComponent<Obstacle>(engine, "Obstacle");
+	engine->RegisterObjectMethod("Obstacle", "float get_radius() const", asMETHOD(Obstacle, GetRadius), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Obstacle", "void set_radius(float)", asMETHOD(Obstacle, SetRadius), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Obstacle", "float get_height() const", asMETHOD(Obstacle, GetHeight), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Obstacle", "void set_height(float)", asMETHOD(Obstacle, SetHeight), asCALL_THISCALL);
+	engine->RegisterObjectMethod("Obstacle", "uint get_obstacleId() const", asMETHOD(Obstacle, GetObstacleID), asCALL_THISCALL);
+}
+
+void RegisterNavArea(asIScriptEngine* engine)
+{
+	RegisterComponent<NavArea>(engine, "NavArea");
+	engine->RegisterObjectMethod("NavArea", "BoundingBox get_bounds() const", asMETHOD(NavArea, GetBounds), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "void set_bounds(const BoundingBox&in)", asMETHOD(NavArea, SetBounds), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "uint get_areaType() const", asMETHOD(NavArea, GetAreaType), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "void set_areaType(uint)", asMETHOD(NavArea, SetAreaType), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "uint get_flags() const", asMETHOD(NavArea, GetFlags), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "void set_flags(uint) const", asMETHOD(NavArea, SetFlags), asCALL_THISCALL);
+	engine->RegisterObjectMethod("NavArea", "BoundingBox get_transformedBounds() const", asMETHOD(NavArea, GetTransformedBounds), asCALL_THISCALL);
+}
+
+static CScriptArray* GetNavigationAgents(DetourCrowdManager* crowd)
+{
+	PODVector<NavigationAgent*> holder;
+	const PODVector<NavigationAgent*>& agents = crowd->GetNavigationAgents();
+	for (unsigned i = 0; i < agents.Size(); ++i)
+		holder.Push(agents[i]);
+	return VectorToArray<NavigationAgent*>(holder, "Array<NavigationAgent@>");
+}
+
+void RegisterDetourCrowdManager(asIScriptEngine* engine)
+{
+	RegisterComponent<DetourCrowdManager>(engine, "DetourCrowdManager");
+	engine->RegisterObjectMethod("DetourCrowdManager", "Array<NavigationAgent@> GetAgents() const", asFUNCTION(GetNavigationAgents), asCALL_CDECL_OBJFIRST);
+	engine->RegisterObjectMethod("DetourCrowdManager", "NavigationMesh@+ get_navMesh() const", asMETHOD(DetourCrowdManager, GetNavigationMesh), asCALL_THISCALL);
+}
+
 void RegisterNavigationAPI(asIScriptEngine* engine)
 {
     RegisterNavigable(engine);
     RegisterNavigationMesh(engine);
+	RegisterDynamicNavigationMesh(engine);
     RegisterOffMeshConnection(engine);
+	//RegisterDetourCrowdManager(engine);
+	RegisterObstacle(engine);
+	RegisterNavArea(engine);
 }
 
 }

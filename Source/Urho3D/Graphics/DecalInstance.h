@@ -5,7 +5,7 @@
 
 namespace Urho3D 
 {
-	class Decal;
+	struct Decal;
 	class DecalSet;
 
 	class DecalInstance : Component {

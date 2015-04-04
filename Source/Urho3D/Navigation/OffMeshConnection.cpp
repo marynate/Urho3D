@@ -55,6 +55,7 @@ void OffMeshConnection::RegisterObject(Context* context)
     ATTRIBUTE("Endpoint NodeID", int, endPointID_, 0, AM_DEFAULT | AM_NODEID);
     ATTRIBUTE("Radius", float, radius_, DEFAULT_RADIUS, AM_DEFAULT);
     ATTRIBUTE("Bidirectional", bool, bidirectional_, true, AM_DEFAULT);
+	ATTRIBUTE("Mask", unsigned, mask_, -1, AM_DEFAULT);
 }
 
 void OffMeshConnection::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
@@ -98,6 +99,12 @@ void OffMeshConnection::SetBidirectional(bool enabled)
 {
     bidirectional_ = enabled;
     MarkNetworkUpdate();
+}
+
+void OffMeshConnection::SetMask(unsigned short newMask)
+{
+	mask_ = newMask;
+	MarkNetworkUpdate();
 }
 
 void OffMeshConnection::SetEndPoint(Node* node)
