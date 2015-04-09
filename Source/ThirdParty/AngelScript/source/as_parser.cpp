@@ -1,6 +1,6 @@
 /*
    AngelCode Scripting Library
-   Copyright (c) 2003-2014 Andreas Jonsson
+   Copyright (c) 2003-2015 Andreas Jonsson
 
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -261,6 +261,13 @@ int asCParser::ParsePropertyDeclaration(asCScriptCode *script)
 	scriptNode->AddChildLast(ParseType(true));
 	if( isSyntaxError ) return -1;
 
+	// Allow optional '&' to indicate that the property is indirect, i.e. stored as reference
+	sToken t;
+	GetToken(&t);
+	RewindTo(&t);
+	if( t.type == ttAmp )
+		scriptNode->AddChildLast(ParseToken(ttAmp));
+
 	// Allow optional namespace to be defined before the identifier in case
 	// the declaration is to be used for searching for an existing property
 	ParseOptionalScope(scriptNode);
@@ -269,7 +276,6 @@ int asCParser::ParsePropertyDeclaration(asCScriptCode *script)
 	if( isSyntaxError ) return -1;
 
 	// The declaration should end after the identifier
-	sToken t;
 	GetToken(&t);
 	if( t.type != ttEnd )
 	{
@@ -402,9 +408,11 @@ asCScriptNode *asCParser::ParseType(bool allowConst, bool allowVariableType, boo
 	if( isSyntaxError ) return node;
 
 	// If the datatype is a template type, then parse the subtype within the < >
+	GetToken(&t);
+	RewindTo(&t);
 	asCScriptNode *type = node->lastChild;
 	tempString.Assign(&script->code[type->tokenPos], type->tokenLength);
-	if( engine->IsTemplateType(tempString.AddressOf()) )
+	if( engine->IsTemplateType(tempString.AddressOf()) && t.type == ttLessThan )
 	{
 		GetToken(&t);
 		if( t.type != ttLessThan )
@@ -1104,10 +1112,13 @@ bool asCParser::CheckTemplateType(sToken &t)
 	tempString.Assign(&script->code[t.pos], t.length);
 	if( engine->IsTemplateType(tempString.AddressOf()) )
 	{
-		// Expect the sub type within < >
+		// If the next token is a < then parse the sub-type too
 		GetToken(&t);
 		if( t.type != ttLessThan )
-			return false;
+		{
+			RewindTo(&t);
+			return true;
+		}
 
 		for(;;)
 		{
