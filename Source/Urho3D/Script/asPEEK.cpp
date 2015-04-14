@@ -1400,9 +1400,9 @@ String asPEEK::ToString(const Variable& var, HashSet<void*> *previous)
 		String ss;
 		ss += "{\"addr\":\"0x";
 		if (var.tid & asTYPEID_OBJHANDLE)
-			ss += (int)(*(void**)var.address);
+			ss += (uintptr_t)(*(void**)var.address);
 		else
-			ss += (int)(var.address);
+			ss += (uintptr_t)(var.address);
 		ss += "\"}";
 		return ss;
 	} 
@@ -1440,9 +1440,9 @@ String asPEEK::ToString(const Variable& var, HashSet<void*> *previous)
 			String ss;
 			ss += "{\"addr\":\"0x";
 			if (isHandle)
-				ss += (int)(*(void**)(var.address));
+				ss += (uintptr_t)(*(void**)(var.address));
 			else
-				ss += (int)var.address;
+				ss += (uintptr_t)var.address;
 			ss += " ";
 			ss += engine_->GetTypeDeclaration(tid);
 			ss += "\"}";
@@ -2075,7 +2075,7 @@ void asPEEK::ScriptObjectToString(asIScriptObject* obj, String& ss, HashSet<void
 					if (previous->Contains(v)) 
 					{		
 						ss += "{\"[REPEAT]\":\"0x";
-						ss += (int)v;
+						ss += (uintptr_t)v;
 						ss += "\"}";
 
 						if (i != (pcount - 1) )
