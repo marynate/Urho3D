@@ -191,6 +191,11 @@ String& String::operator += (unsigned short rhs)
 {
     return *this += String(rhs);
 }
+    
+String& String::operator += (unsigned long rhs)
+{
+    return *this += String(rhs);
+}
 
 String& String::operator += (float rhs)
 {
